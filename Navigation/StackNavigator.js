@@ -2,7 +2,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { StyleSheet } from "react-native";
 import Login from "../Screens/Authentication/Login";
-import Home from "../Screens/Home";
 import TabNavigator from "./TabNavigator";
 
 const { Navigator, Screen } = createStackNavigator();
