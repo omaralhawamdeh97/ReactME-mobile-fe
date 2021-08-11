@@ -8,21 +8,32 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView,
   Image,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { signin } from "../../store/actions/authActions";
 import { LoginButton, LoginText } from "./styles";
 
 const Login = ({ navigation }) => {
   const { navigate } = navigation;
   const [user, setUser] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+
+  const handleLogin = () => {
+    dispatch(signin(user, navigation, setError));
+  };
+
+  let checkFields = true;
+  if (user.username !== "" && user.password !== "") {
+    checkFields = false;
+  }
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <SafeAreaView />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.inner}>
           <Image
@@ -42,7 +53,12 @@ const Login = ({ navigation }) => {
             onChangeText={(password) => setUser({ ...user, password })}
           />
           <View style={styles.btnContainer}>
-            <LoginButton backgroundColor={"#481049"}>
+            <Text style={styles.errorText}>{error}</Text>
+            <LoginButton
+              backgroundColor={"#481049"}
+              onPress={handleLogin}
+              disabled={checkFields}
+            >
               <LoginText color={"white"}>Login</LoginText>
             </LoginButton>
             <View style={styles.orView}>
@@ -67,14 +83,13 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: 15,
   },
   inner: {
-    flex: 1,
     justifyContent: "space-evenly",
   },
   textInput: {
     height: 60,
-    borderColor: "#000000",
     borderBottomWidth: 1,
     marginBottom: 36,
     marginTop: 10,
@@ -82,7 +97,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   image: {
-    height: "40%",
+    height: "45%",
     width: "100%",
   },
 
@@ -97,4 +112,5 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "black",
   },
+  errorText: { textAlign: "center", color: "red" },
 });

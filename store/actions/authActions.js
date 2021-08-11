@@ -20,11 +20,14 @@ export const signin = (user, navigation, setError) => {
   return async (dispatch) => {
     try {
       const res = await instance.post("/signin", user);
-      console.log(res.data);
       dispatch(setUser(res.data.token));
+      console.log("res.data.token");
+      navigation.replace("Tab");
     } catch (error) {
       if (error.message.includes("401")) {
-        setError(error.message);
+        setError("Invalid username or password");
+      } else {
+        setError("Connection problem");
       }
     }
   };
