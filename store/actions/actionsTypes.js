@@ -1,3 +1,6 @@
 //User Action
 export const SET_USER = "SET_USER";
-// export const FETCH_USERS = "FETCH_USERS";
+
+//Posts Actions
+export const FETCH_POSTS = "FETCH_POSTS";
+export const ADD_POST = "ADD_POST";

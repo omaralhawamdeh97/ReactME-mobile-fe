@@ -21,7 +21,6 @@ export const signin = (user, navigation, setError) => {
     try {
       const res = await instance.post("/signin", user);
       dispatch(setUser(res.data.token));
-      console.log("res.data.token");
       navigation.replace("Tab");
     } catch (error) {
       if (error.message.includes("401")) {
@@ -44,7 +43,9 @@ export const checkForToken = () => async (dispatch) => {
   if (token) {
     const currentTime = Date.now();
     const user = decode(token);
-    if (user.exp > currentTime) return dispatch(setUser(token));
+    if (user.exp > currentTime) {
+      return dispatch(setUser(token));
+    }
   }
   dispatch(setUser());
 };
