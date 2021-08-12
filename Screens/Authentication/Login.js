@@ -10,12 +10,13 @@ import {
   Keyboard,
   Image,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signin } from "../../store/actions/authActions";
 import { LoginButton, LoginText } from "./styles";
 
 const Login = ({ navigation }) => {
   const { navigate } = navigation;
+
   const [user, setUser] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const dispatch = useDispatch();
@@ -46,11 +47,13 @@ const Login = ({ navigation }) => {
             placeholder="Username"
             style={styles.textInput}
             onChangeText={(username) => setUser({ ...user, username })}
+            autoCapitalize="none"
           />
           <TextInput
             placeholder="Password"
             style={styles.textInput}
             onChangeText={(password) => setUser({ ...user, password })}
+            secureTextEntry
           />
           <View style={styles.btnContainer}>
             <Text style={styles.errorText}>{error}</Text>
@@ -97,8 +100,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   image: {
-    height: "45%",
+    height: "39%",
     width: "100%",
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
   },
 
   orView: {
@@ -111,6 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 1,
     backgroundColor: "black",
+    marginHorizontal: "7%",
   },
   errorText: { textAlign: "center", color: "red" },
 });
