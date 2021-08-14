@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import { useSelector } from "react-redux";
 import Login from "../Screens/Authentication/Login";
-import TabNavigator from "./TabNavigator";
 import Cam from "../Screens/Camera/Cam";
+import TabNavigator from "./TabNavigator";
 
 const { Navigator, Screen } = createStackNavigator();
 const StackNavigator = () => {

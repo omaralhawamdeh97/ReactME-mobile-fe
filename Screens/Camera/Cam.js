@@ -18,7 +18,7 @@ const WINDOW_HEIGHT = Dimensions.get("window").height;
 const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
 const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
 
-export default function Cam() {
+const Cam = () => {
   const dispatch = useDispatch();
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
@@ -175,7 +175,8 @@ export default function Cam() {
       </View>
     </SafeAreaView>
   );
-}
+};
+export default Cam;
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
