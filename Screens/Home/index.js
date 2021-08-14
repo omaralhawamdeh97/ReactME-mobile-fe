@@ -87,15 +87,17 @@ const Home = ({ navigation }) => {
               </View>
             </RBSheet>
           </View>
-          <ScrollView style={styles.list}>
+          <ScrollView>
             {posts.length !== 0 ? (
               posts
-                .map((post) => <PostCard post={post} key={post.id} />)
+                .map((post) => (
+                  <PostCard post={post} key={post.id} navigation={navigation} />
+                ))
                 .reverse()
             ) : (
-              <TouchableOpacity onPress={pickVideo}>
+              <TouchableOpacity onPress={() => refRBSheet.current.open()}>
                 <Text style={styles.warning}>
-                  No videos , click to start uploading !
+                  No videos , press to start uploading !
                 </Text>
               </TouchableOpacity>
             )}

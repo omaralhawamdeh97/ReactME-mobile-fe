@@ -4,6 +4,7 @@ import { StyleSheet, Text } from "react-native";
 import { useSelector } from "react-redux";
 import Login from "../Screens/Authentication/Login";
 import Cam from "../Screens/Camera/Cam";
+import Reactions from "../Screens/Reactions";
 import TabNavigator from "./TabNavigator";
 
 const { Navigator, Screen } = createStackNavigator();
@@ -23,6 +24,7 @@ const StackNavigator = () => {
           <Screen name="Login" component={Login} />
           <Screen name="Tab" component={TabNavigator} />
           <Screen name="Cam" component={Cam} />
+          <Screen name="Reactions" component={Reactions} />
         </Navigator>
       )}
     </>
