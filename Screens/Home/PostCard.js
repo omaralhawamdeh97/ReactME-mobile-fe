@@ -1,8 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Video } from "expo-av";
+import moment from "moment";
 
 const PostCard = ({ post }) => {
+  const date = moment(post.createdAt).add(24, "hours").format("LLL");
+
   return (
     <View style={styles.card}>
       <Video
@@ -13,7 +16,7 @@ const PostCard = ({ post }) => {
         useNativeControls
         resizeMode="cover"
       />
-      <Text>Comments</Text>
+      <Text>{date}</Text>
     </View>
   );
 };
@@ -27,5 +30,7 @@ const styles = StyleSheet.create({
     height: 350,
     borderRadius: 20,
   },
-  card: { marginHorizontal: "10%" },
+  card: {
+    marginHorizontal: "10%",
+  },
 });

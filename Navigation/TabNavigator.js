@@ -12,6 +12,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={({ route, navigation }) => ({
         tabBarActiveBackgroundColor: "white",
         headerShown: false,
