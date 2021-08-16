@@ -14,7 +14,7 @@ const TabNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route, navigation }) => ({
-        tabBarActiveBackgroundColor: "white",
+        tabBarActiveTintColor: "white",
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === "Home") {
@@ -49,6 +49,7 @@ const TabNavigator = () => {
           borderTopLeftRadius: "10%",
           borderTopRightRadius: "10%",
         },
+        tabBarShowLabel: false,
       })}
     >
       <Tab.Screen name="Friends" component={Friends} />

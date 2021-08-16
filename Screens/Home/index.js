@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Button,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -16,14 +16,24 @@ import { EvilIcons } from "@expo/vector-icons";
 import PostCard from "./PostCard";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { fetchFriends } from "../../store/actions/friendActions";
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const Home = ({ navigation }) => {
   const refRBSheet = useRef();
-
+  const friends = useSelector((state) => state.friendsReducer.friends);
+  const [refreshing, setRefreshing] = React.useState(false);
   const posts = useSelector((state) => state.postsReducer.posts);
   const postsLoading = useSelector((state) => state.postsReducer.loading);
   const [openCam, setOpenCam] = useState(false);
   const dispatch = useDispatch();
+  var postsList = [];
+  const postsMaking = friends.map((friend) =>
+    friend.posts.forEach((post) => postsList.push(post))
+  );
 
   const pickVideo = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -47,6 +57,12 @@ const Home = ({ navigation }) => {
     }
   };
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(fetchFriends());
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   return (
     <>
       {postsLoading ? (
@@ -55,21 +71,22 @@ const Home = ({ navigation }) => {
         <View style={styles.container}>
           <SafeAreaView />
           <View style={styles.header}>
-            <Text>My Videos</Text>
+            <Text></Text>
             <TouchableOpacity onPress={() => refRBSheet.current.open()}>
               <EvilIcons name="plus" size={40} color="#481049" />
             </TouchableOpacity>
-
             <RBSheet
               ref={refRBSheet}
               closeOnDragDown={true}
               closeOnPressMask={true}
               customStyles={{
                 container: {
+                  opacity: 1,
                   height: "19%",
                   flexDirection: "cloumn",
                 },
               }}
+              animationType="fade"
             >
               <View style={styles.sheet}>
                 <MaterialIcons
@@ -87,7 +104,7 @@ const Home = ({ navigation }) => {
               </View>
             </RBSheet>
           </View>
-          <ScrollView>
+          {/* <ScrollView>
             {posts.length !== 0 ? (
               posts
                 .map((post) => (
@@ -102,6 +119,17 @@ const Home = ({ navigation }) => {
               </TouchableOpacity>
             )}
             {openCam ? navigation.navigate("Cam") : <></>}
+          </ScrollView> */}
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            {postsList
+              .map((post) => (
+                <PostCard post={post} key={post.id} navigation={navigation} />
+              ))
+              .reverse()}
           </ScrollView>
         </View>
       )}
