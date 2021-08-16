@@ -5,15 +5,20 @@ import ReactionCard from "./ReactionCard";
 
 const Reactions = ({ route }) => {
   const { reactions } = route.params;
-  console.log(reactions);
+  const { postVideo } = route.params;
+  console.log(route.params, "entered");
   return (
     <View style={styles.container}>
       <SafeAreaView />
       <Text>Reactions</Text>
-      {reactions.length !== 0 ? (
+      {reactions?.length !== 0 ? (
         <ScrollView>
-          {reactions.map((reaction) => (
-            <ReactionCard reaction={reaction} key={reaction.id} />
+          {reactions?.map((reaction) => (
+            <ReactionCard
+              reaction={reaction}
+              key={reaction.id}
+              postVideo={postVideo}
+            />
           ))}
         </ScrollView>
       ) : (
@@ -27,13 +32,9 @@ export default Reactions;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "whitesmoke",
-  },
-  video: {
+    ...StyleSheet.absoluteFillObject,
+    height: "100%",
     width: "100%",
-    marginVertical: 15,
-    height: 350,
-    borderRadius: 20,
+    flex: 1,
   },
 });
