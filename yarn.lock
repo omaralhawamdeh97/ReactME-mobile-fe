@@ -5010,6 +5010,11 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-native-focus-scroll@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-focus-scroll/-/react-native-focus-scroll-0.0.4.tgz#38121feb53319c6a29447f2412f604d06ba44f1b"
+  integrity sha1-OBIf61MxnGopRH8kEvYE0GukTxs=
+
 react-native-gesture-handler@~1.10.2:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.10.3.tgz#942bbf2963bbf49fa79593600ee9d7b5dab3cfc0"

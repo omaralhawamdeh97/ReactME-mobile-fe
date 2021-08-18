@@ -25,7 +25,6 @@ const Friends = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Friends</Text>
       <FlatList
         data={friends}
         renderItem={renderItem}
@@ -50,7 +49,7 @@ const Friends = ({ navigation }) => {
 export default Friends;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, marginTop: 35 },
+  container: { flex: 1 },
   list: { height: WINDOW_HEIGHT, paddingTop: 15 },
   touchableOpacityStyle: {
     position: "absolute",
