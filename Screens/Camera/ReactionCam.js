@@ -11,7 +11,7 @@ import { Camera } from "expo-camera";
 import { Video } from "expo-av";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
-import { addPost } from "../../store/actions/postActions";
+import { addReaction } from "../../store/actions/reactionActions";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
@@ -51,9 +51,9 @@ const ReactionCam = ({ route }) => {
     let formData = new FormData();
 
     formData.append("video", { uri: localUri, name: filename, type });
-    formData.append("title");
+    formData.append("postId", route.params.postId);
 
-    dispatch(addPost(formData));
+    dispatch(addReaction(formData));
   };
 
   const recordVideo = async () => {
@@ -124,7 +124,7 @@ const ReactionCam = ({ route }) => {
       source={{ uri: videoSource }}
       shouldPlay={true}
       style={styles.media}
-      //   isLooping
+      isLooping
     />
   );
 
@@ -169,6 +169,7 @@ const ReactionCam = ({ route }) => {
         shouldPlay={shouldPlay}
         // useNativeControls
         onPlaybackStatusUpdate={(status) => setVideoStatus(() => status)}
+        volume={0.009}
       />
       <Camera
         ref={cameraRef}

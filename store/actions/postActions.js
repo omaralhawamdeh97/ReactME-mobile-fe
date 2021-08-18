@@ -7,13 +7,12 @@ export const addPost = (newPost) => {
     try {
       const token = await AsyncStorage.getItem("myToken");
       instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-
       const res = await instance.post("/posts/new", newPost);
+
       dispatch({
         type: actionTypes.ADD_POST,
         payload: { newPost: res.data },
       });
-      console.log("done");
     } catch (error) {
       console.log(error);
     }

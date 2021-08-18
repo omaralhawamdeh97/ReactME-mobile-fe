@@ -2,7 +2,8 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import Home from "../Screens/Home";
 import Friends from "../Screens/Friends";
 import Profile from "../Screens/Profile";
@@ -21,23 +22,23 @@ const TabNavigator = () => {
             return (
               <AntDesign
                 name={"home"}
-                size={23}
+                size={25}
                 color={focused ? "black" : "white"}
               />
             );
           } else if (route.name === "Friends") {
             return (
-              <FontAwesome5
-                name="user-friends"
-                size={24}
+              <MaterialCommunityIcons
+                name="plus-box-outline"
+                size={25}
                 color={focused ? "black" : "white"}
               />
             );
           } else if (route.name === "Profile") {
             return (
-              <AntDesign
-                name="profile"
-                size={24}
+              <Ionicons
+                name="person-circle-outline"
+                size={30}
                 color={focused ? "black" : "white"}
               />
             );
@@ -52,8 +53,8 @@ const TabNavigator = () => {
         tabBarShowLabel: false,
       })}
     >
-      <Tab.Screen name="Friends" component={Friends} />
       <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Friends" component={Friends} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
@@ -61,4 +62,4 @@ const TabNavigator = () => {
 
 export default TabNavigator;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({ omar: {} });

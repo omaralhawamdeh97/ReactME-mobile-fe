@@ -30,8 +30,9 @@ const Home = ({ navigation }) => {
   const postsLoading = useSelector((state) => state.postsReducer.loading);
   const [openCam, setOpenCam] = useState(false);
   const dispatch = useDispatch();
+
   var postsList = [];
-  const postsMaking = friends.map((friend) =>
+  const postsMaking = friends?.map((friend) =>
     friend.posts.forEach((post) => postsList.push(post))
   );
 
@@ -89,37 +90,25 @@ const Home = ({ navigation }) => {
               animationType="fade"
             >
               <View style={styles.sheet}>
-                <MaterialIcons
-                  name="my-library-add"
-                  size={50}
-                  color="black"
-                  onPress={pickVideo}
-                />
-                <MaterialCommunityIcons
-                  name="video"
-                  size={50}
-                  color="black"
-                  onPress={() => setOpenCam(true)}
-                />
+                <TouchableOpacity onPress={pickVideo}>
+                  <MaterialIcons
+                    name="my-library-add"
+                    size={50}
+                    color="black"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setOpenCam(true)}>
+                  <MaterialCommunityIcons
+                    name="video"
+                    size={50}
+                    color="black"
+                  />
+                </TouchableOpacity>
               </View>
             </RBSheet>
           </View>
-          {/* <ScrollView>
-            {posts.length !== 0 ? (
-              posts
-                .map((post) => (
-                  <PostCard post={post} key={post.id} navigation={navigation} />
-                ))
-                .reverse()
-            ) : (
-              <TouchableOpacity onPress={() => refRBSheet.current.open()}>
-                <Text style={styles.warning}>
-                  No videos , press to start uploading !
-                </Text>
-              </TouchableOpacity>
-            )}
-            {openCam ? navigation.navigate("Cam") : <></>}
-          </ScrollView> */}
+
+          {openCam ? navigation.navigate("Cam") : <></>}
           <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

@@ -46,7 +46,7 @@ const PostCard = ({ post, navigation }) => {
         />
       </TouchableOpacity>
       <Button
-        title="Reactions"
+        title={`Reactions ${post.reactions.length}`}
         onPress={() =>
           navigation.navigate("Reactions", {
             reactions: post.reactions,
@@ -59,6 +59,7 @@ const PostCard = ({ post, navigation }) => {
         onPress={() =>
           navigation.navigate("ReactionCam", {
             postVideo: post.video,
+            postId: post.id,
           })
         }
       />

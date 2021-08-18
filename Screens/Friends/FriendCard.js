@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     shadowOpacity: 0.2,
     marginBottom: 10,
+    borderColor: "#481049",
   },
   image: { width: 65, height: 65, borderRadius: 10, marginLeft: 15 },
   username: { marginLeft: 15 },

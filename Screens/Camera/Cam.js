@@ -18,14 +18,15 @@ const WINDOW_HEIGHT = Dimensions.get("window").height;
 const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
 const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
 
-const Cam = () => {
+const Cam = ({ navigation }) => {
   const dispatch = useDispatch();
   const [hasPermission, setHasPermission] = useState(null);
-  const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+  const [cameraType, setCameraType] = useState(Camera.Constants.Type.front);
   const [isPreview, setIsPreview] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isVideoRecording, setIsVideoRecording] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
+
   const cameraRef = useRef();
 
   useEffect(() => {
