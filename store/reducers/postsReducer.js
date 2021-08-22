@@ -2,6 +2,7 @@ import * as actionTypes from "../actions/actionsTypes";
 
 const initialState = {
   posts: [],
+  publicPosts: [],
   loading: true,
 };
 
@@ -11,6 +12,12 @@ const postsReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: action.payload,
+        loading: false,
+      };
+    case actionTypes.FETCH_PUBLIC_POSTS:
+      return {
+        ...state,
+        publicPosts: [...state.publicPosts, ...action.payload],
         loading: false,
       };
     case actionTypes.ADD_POST:

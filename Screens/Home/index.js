@@ -1,40 +1,50 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Image,
   RefreshControl,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import RBSheet from "react-native-raw-bottom-sheet";
-import * as ImagePicker from "expo-image-picker";
-import { addPost } from "../../store/actions/postActions";
-import { EvilIcons } from "@expo/vector-icons";
 import PostCard from "./PostCard";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { fetchFriends } from "../../store/actions/friendActions";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
+var postsList = [];
 
 const Home = ({ navigation }) => {
+  const dispatch = useDispatch();
   const refRBSheet = useRef();
   const friends = useSelector((state) => state.friendsReducer.friends);
   const [refreshing, setRefreshing] = React.useState(false);
-  const posts = useSelector((state) => state.postsReducer.posts);
-  const postsLoading = useSelector((state) => state.postsReducer.loading);
   const [openCam, setOpenCam] = useState(false);
-  const dispatch = useDispatch();
+  const postsLoading = useSelector((state) => state.postsReducer.loading);
 
-  var postsList = [];
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(fetchFriends());
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   const postsMaking = friends?.map((friend) =>
     friend.posts.forEach((post) => postsList.push(post))
   );
+
+  const posts = postsList
+    .map((post) => (
+      <PostCard post={post} key={post.id} navigation={navigation} />
+    ))
+    .reverse();
 
   const pickVideo = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -52,77 +62,68 @@ const Home = ({ navigation }) => {
     let formData = new FormData();
 
     formData.append("video", { uri: localUri, name: filename, type });
-    formData.append("title");
+
     if (!result.cancelled) {
       dispatch(addPost(formData));
     }
   };
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    dispatch(fetchFriends());
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
+  const sheet = (
+    <RBSheet
+      ref={refRBSheet}
+      closeOnDragDown={true}
+      closeOnPressMask={true}
+      customStyles={{
+        container: {
+          opacity: 1,
+          height: 112,
+          flexDirection: "cloumn",
+        },
+      }}
+      animationType="fade"
+    >
+      <View style={styles.sheet}>
+        <TouchableOpacity onPress={pickVideo}>
+          <MaterialIcons name="my-library-add" size={50} color="#481049" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setOpenCam(true)}>
+          <MaterialCommunityIcons name="video" size={50} color="#481049" />
+        </TouchableOpacity>
+      </View>
+    </RBSheet>
+  );
+
+  if (postsLoading) {
+    return <Text>Loding...</Text>;
+  }
 
   return (
-    <>
-      {postsLoading ? (
-        <Text>Loading..</Text>
-      ) : (
-        <View style={styles.container}>
-          <SafeAreaView />
-          <View style={styles.header}>
-            <Text></Text>
-            <TouchableOpacity onPress={() => refRBSheet.current.open()}>
-              <EvilIcons name="plus" size={40} color="#481049" />
-            </TouchableOpacity>
-            <RBSheet
-              ref={refRBSheet}
-              closeOnDragDown={true}
-              closeOnPressMask={true}
-              customStyles={{
-                container: {
-                  opacity: 1,
-                  height: "19%",
-                  flexDirection: "cloumn",
-                },
-              }}
-              animationType="fade"
-            >
-              <View style={styles.sheet}>
-                <TouchableOpacity onPress={pickVideo}>
-                  <MaterialIcons
-                    name="my-library-add"
-                    size={50}
-                    color="black"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setOpenCam(true)}>
-                  <MaterialCommunityIcons
-                    name="video"
-                    size={50}
-                    color="black"
-                  />
-                </TouchableOpacity>
-              </View>
-            </RBSheet>
-          </View>
-
-          {openCam ? navigation.navigate("Cam") : <></>}
-          <ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
-            {postsList
-              .map((post) => (
-                <PostCard post={post} key={post.id} navigation={navigation} />
-              ))
-              .reverse()}
-          </ScrollView>
-        </View>
-      )}
-    </>
+    <View style={styles.container}>
+      <StatusBar barStyle={"default"} />
+      <SafeAreaView />
+      <View style={styles.header}>
+        <Image source={require("../../assets/test.png")} style={styles.image} />
+        <MaterialCommunityIcons
+          onPress={() => refRBSheet.current.open()}
+          name="plus-box-outline"
+          size={30}
+          color={"white"}
+        />
+      </View>
+      {sheet}
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="white"
+          />
+        }
+      >
+        {posts}
+        {openCam ? navigation.navigate("Cam") : <></>}
+      </ScrollView>
+    </View>
   );
 };
 
@@ -131,14 +132,15 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "whitesmoke",
+    backgroundColor: "black",
   },
   header: {
-    paddingHorizontal: "3%",
-    paddingVertical: "3%",
+    paddingHorizontal: "2%",
+    height: "10%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    backgroundColor: "black",
   },
   warning: { color: "gray", textAlign: "center", paddingTop: "50%" },
   sheet: {
@@ -146,5 +148,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly",
     paddingTop: "5%",
+  },
+  image: {
+    height: "100%",
+    width: 150,
   },
 });
