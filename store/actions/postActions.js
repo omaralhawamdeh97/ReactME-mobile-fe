@@ -9,10 +9,7 @@ export const addPost = (newPost) => {
       instance.defaults.headers.common.Authorization = `Bearer ${token}`;
       const res = await instance.post("/posts/new", newPost);
 
-      dispatch({
-        type: actionTypes.ADD_POST,
-        payload: { newPost: res.data },
-      });
+      dispatch(fetchPosts());
     } catch (error) {
       console.log(error);
     }
@@ -27,6 +24,20 @@ export const fetchPosts = () => {
       const res = await instance.get("/posts");
       dispatch({
         type: actionTypes.FETCH_POSTS,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const getPublicPosts = (pageNumber) => {
+  return async (dispatch) => {
+    try {
+      const res = await instance.get(`/posts/${pageNumber}/public`);
+      dispatch({
+        type: actionTypes.FETCH_PUBLIC_POSTS,
         payload: res.data,
       });
     } catch (error) {

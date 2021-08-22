@@ -15,6 +15,7 @@ import FriendCard from "./FriendCard";
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 const Friends = ({ navigation }) => {
   const friends = useSelector((state) => state.friendsReducer.friends);
+
   const renderItem = (friend) => (
     <FriendCard friend={friend.item} navigation={navigation} />
   );
@@ -28,7 +29,7 @@ const Friends = ({ navigation }) => {
       <FlatList
         data={friends}
         renderItem={renderItem}
-        keyExtractor={(friend) => `${friend.id}`}
+        keyExtractor={(friend) => friend.id}
         style={styles.list}
       />
       <TouchableOpacity
@@ -60,6 +61,5 @@ const styles = StyleSheet.create({
   image: {
     width: 50,
     height: 50,
-    backgroundColor: "white",
   },
 });

@@ -3,12 +3,15 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
+  Switch,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { goPublic } from "../../store/actions/authActions";
 import Friends from "../Friends";
 import MyPosts from "../Home/MyPosts";
 import PostCard from "../Home/PostCard";
@@ -18,6 +21,7 @@ const Profile = ({ navigation }) => {
   const posts = useSelector((state) => state.postsReducer.posts);
   const userLoading = useSelector((state) => state.authReducer.loading);
   const friends = useSelector((state) => state.friendsReducer.friends);
+  const dispatch = useDispatch();
 
   const [isViewing, setIsViewing] = useState("posts");
 
@@ -42,6 +46,19 @@ const Profile = ({ navigation }) => {
       >
         <Text>Edit Profile</Text>
       </TouchableOpacity>
+      <View style={{ flexDirection: "row", paddingTop: 3 }}>
+        <Text>Go public</Text>
+        <Switch
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={!user.isPublic ? "#f5dd4b" : "#f4f3f4"}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={(isPublic) => {
+            dispatch(goPublic({ isPublic }));
+          }}
+          value={user.isPublic}
+          style={{ marginLeft: 15 }}
+        />
+      </View>
     </View>
   );
 
@@ -71,9 +88,12 @@ const Profile = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {top}
-      {stats}
-      {isViewingComponent}
+      <StatusBar barStyle={"dark-content"} />
+      <ScrollView>
+        {top}
+        {stats}
+        {isViewingComponent}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -85,8 +105,8 @@ const styles = StyleSheet.create({
   top: {
     justifyContent: "center",
     alignItems: "center",
-    height: "23%",
-    marginTop: "6%",
+    // height: "23%",
+    marginTop: 20,
   },
   username: { fontSize: 25 },
   image: { width: 120, height: 120, borderRadius: 100 },
@@ -94,7 +114,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",
-    paddingTop: 35,
+    paddingTop: 10,
     borderBottomWidth: 0.61,
     borderBottomColor: "#481049",
     paddingBottom: 25,

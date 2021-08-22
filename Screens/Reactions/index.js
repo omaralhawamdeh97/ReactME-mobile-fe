@@ -16,6 +16,7 @@ const WINDOW_HEIGHT = Dimensions.get("window").height;
 const Reactions = ({ route }) => {
   const { reactions } = route.params;
   const { postVideo } = route.params;
+
   return (
     <View style={styles.container}>
       <StatusBar animated barStyle={"default"} />
@@ -30,7 +31,7 @@ const Reactions = ({ route }) => {
           ))}
         </ScrollView>
       ) : (
-        <Text> no reactions yet</Text>
+        <Text> no reactions yet 😭</Text>
       )}
     </View>
   );

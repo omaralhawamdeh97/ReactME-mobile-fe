@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Button,
   Image,
+  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,10 +15,10 @@ const PostCard = ({ post, navigation }) => {
   const date = moment(post.createdAt).fromNow();
   const { user } = post;
   const [play, setPlay] = useState(false);
+
   const start = () => {
     play ? setPlay(false) : setPlay(true);
   };
-
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -34,7 +35,16 @@ const PostCard = ({ post, navigation }) => {
         </View>
         <Text style={styles.date}>{date}</Text>
       </View>
-      <TouchableOpacity onPress={start} activeOpacity={1}>
+
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("ReactionCam", {
+            postVideo: post.video,
+            postId: post.id,
+          })
+        }
+        activeOpacity={1}
+      >
         <Video
           style={styles.video}
           source={{
@@ -45,6 +55,7 @@ const PostCard = ({ post, navigation }) => {
           shouldPlay={play}
         />
       </TouchableOpacity>
+
       <Button
         title={`Reactions ${post.reactions.length}`}
         onPress={() =>
@@ -54,15 +65,10 @@ const PostCard = ({ post, navigation }) => {
           })
         }
       />
-      <Button
-        title="React"
-        onPress={() =>
-          navigation.navigate("ReactionCam", {
-            postVideo: post.video,
-            postId: post.id,
-          })
-        }
-      />
+      <ImageBackground
+        source={require("../../assets/white.png")}
+        style={{ width: 70, height: 50 }}
+      ></ImageBackground>
     </View>
   );
 };
@@ -87,5 +93,5 @@ const styles = StyleSheet.create({
   },
   userImage: { flexDirection: "row", alignItems: "center" },
   image: { width: 50, height: 50, borderRadius: 100 },
-  username: { fontSize: 18, paddingLeft: 10 },
+  username: { fontSize: 18, paddingLeft: 10, color: "white" },
 });

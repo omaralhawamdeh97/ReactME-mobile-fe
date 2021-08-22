@@ -12,22 +12,28 @@ import { Video } from "expo-av";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { addReaction } from "../../store/actions/reactionActions";
+import { Ionicons } from "@expo/vector-icons";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+import Animated from "react-native-reanimated";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
 const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
 const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
 
-const ReactionCam = ({ route }) => {
+const ReactionCam = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const [hasPermission, setHasPermission] = useState(null);
-  const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+  const [cameraType, setCameraType] = useState(Camera.Constants.Type.front);
   const [isPreview, setIsPreview] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isVideoRecording, setIsVideoRecording] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
   const [videoStatus, setVideoStatus] = useState({});
   const [shouldPlay, setShouldPlay] = useState(false);
+  const [isPlaying, setIsPlaying] = React.useState(true);
+  const [closeCam, setCloseCam] = useState("flex");
+
   const cameraRef = useRef();
 
   useEffect(() => {
@@ -54,6 +60,7 @@ const ReactionCam = ({ route }) => {
     formData.append("postId", route.params.postId);
 
     dispatch(addReaction(formData));
+    navigation.replace("Tab");
   };
 
   const recordVideo = async () => {
@@ -144,6 +151,7 @@ const ReactionCam = ({ route }) => {
           color="white"
         />
       </TouchableOpacity>
+
       <TouchableOpacity
         activeOpacity={0.7}
         disabled={!isCameraReady}
@@ -165,22 +173,36 @@ const ReactionCam = ({ route }) => {
       <Video
         source={{ uri: route.params.postVideo }}
         style={styles.media}
-        // isLooping
         shouldPlay={shouldPlay}
-        // useNativeControls
         onPlaybackStatusUpdate={(status) => setVideoStatus(() => status)}
         volume={0.009}
       />
-      <Camera
-        ref={cameraRef}
-        style={styles.lowCam}
-        type={cameraType}
-        // flashMode={Camera.Constants.FlashMode.on}
-        onCameraReady={onCameraReady}
-        onMountError={(error) => {
-          console.log("cammera error", error);
+      <View
+        style={{
+          display: closeCam,
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "center",
         }}
-      />
+      >
+        <TouchableOpacity
+          onPress={() => console.log("xx")}
+          style={{ zIndex: 1, alignSelf: "flex-start", left: 20, bottom: 7 }}
+        >
+          <Ionicons name="close-circle-sharp" size={30} color="gray" />
+        </TouchableOpacity>
+
+        <Camera
+          ref={cameraRef}
+          style={styles.lowCam}
+          type={cameraType}
+          // flashMode={Camera.Constants.FlashMode.on}
+          onCameraReady={onCameraReady}
+          onMountError={(error) => {
+            console.log("cammera error", error);
+          }}
+        />
+      </View>
       <View style={styles.container}>
         {isVideoRecording && renderVideoRecordIndicator()}
         {videoSource && renderVideoPlayer()}
@@ -260,7 +282,7 @@ const styles = StyleSheet.create({
   lowCam: {
     height: 150,
     width: 150,
-    alignSelf: "flex-end",
+    // alignSelf: "flex-end",
     marginRight: 15,
   },
 });

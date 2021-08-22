@@ -15,6 +15,7 @@ const WINDOW_WIDTH = Dimensions.get("window").width;
 const FriendCard = ({ friend, navigation }) => {
   const [visible, setIsVisible] = useState(false);
   const images = [{ uri: friend.image }];
+
   return (
     <SafeAreaView style={styles.card}>
       <ImageView

@@ -14,18 +14,20 @@ const WINDOW_HEIGHT = Dimensions.get("window").height;
 const ReactionCard = ({ reaction, postVideo }) => {
   const date = moment(reaction.createdAt).fromNow();
   const [start, setStart] = useState(false);
+  const [videoStatus, setVideoStatus] = useState({});
   const startVideo = () => {
     start ? setStart(false) : setStart(true);
   };
+
   return (
     <TouchableOpacity activeOpacity={1} onPress={startVideo}>
       <View style={styles.card}>
         <Video
           source={{ uri: postVideo }}
           style={styles.media}
-          isLooping
+          // isLooping
           resizeMode="cover"
-          shouldPlay={start}
+          shouldPlay={start && videoStatus.isPlaying}
           volume={0}
         />
         <Video
@@ -35,7 +37,8 @@ const ReactionCard = ({ reaction, postVideo }) => {
           }}
           shouldPlay={start}
           resizeMode="cover"
-          isLooping
+          // isLooping
+          onPlaybackStatusUpdate={(status) => setVideoStatus(() => status)}
         />
         <View style={styles.footer}>
           <Text style={styles.text}>
@@ -52,12 +55,12 @@ export default ReactionCard;
 
 const styles = StyleSheet.create({
   video: {
-    top: "3%",
+    marginTop: 19,
     width: 165,
-    right: "-29%",
     height: 165,
-    alignSelf: "center",
+    alignSelf: "flex-end",
     borderRadius: 20,
+    marginRight: 3,
   },
   card: {
     height: WINDOW_HEIGHT,
@@ -66,7 +69,7 @@ const styles = StyleSheet.create({
 
   media: {
     ...StyleSheet.absoluteFillObject,
-    height: WINDOW_HEIGHT,
+    // height: WINDOW_HEIGHT,
   },
   footer: {
     shadowColor: "gray",
@@ -76,6 +79,7 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 150, width: 50 },
     textShadowColor: "white",
     shadowOpacity: 0.82,
+    paddingLeft: 19,
   },
   text: {
     color: "white",
