@@ -8,3 +8,4 @@ export const FETCH_PUBLIC_POSTS = "FETCH_PUBLIC_POSTS";
 
 //Friends Actions
 export const FETCH_FRIENDS = "FETCH_FRIENDS";
+export const REFRESH_FRIENDS = "REFRESH_FRIENDS";

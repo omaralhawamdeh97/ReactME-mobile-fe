@@ -13,6 +13,12 @@ const friendsReducer = (state = initialState, action) => {
         friends: action.payload,
         loading: false,
       };
+    case actionTypes.REFRESH_FRIENDS:
+      return {
+        ...state,
+        friends: action.payload,
+        loading: false,
+      };
 
     default:
       return state;

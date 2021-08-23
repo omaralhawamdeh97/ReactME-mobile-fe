@@ -43,5 +43,5 @@ const Explore = ({ navigation }) => {
 export default Explore;
 
 const styles = StyleSheet.create({
-  containter: { height: WINDOW_HEIGHT, flex: 1 },
+  containter: { flex: 1 },
 });

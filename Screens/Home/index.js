@@ -12,10 +12,15 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import PostCard from "./PostCard";
-import { fetchFriends } from "../../store/actions/friendActions";
+import {
+  fetchFriends,
+  refreshFriends,
+} from "../../store/actions/friendActions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import RBSheet from "react-native-raw-bottom-sheet";
+import { addPost } from "../../store/actions/postActions";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -30,10 +35,15 @@ const Home = ({ navigation }) => {
   const [openCam, setOpenCam] = useState(false);
   const postsLoading = useSelector((state) => state.postsReducer.loading);
 
+  useEffect(() => {
+    dispatch(refreshFriends());
+  }, []);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(fetchFriends());
-    wait(2000).then(() => setRefreshing(false));
+    wait(2000)
+      .then(() => setRefreshing(false))
+      .then(() => dispatch(refreshFriends()));
   }, []);
 
   const postsMaking = friends?.map((friend) =>
@@ -65,6 +75,8 @@ const Home = ({ navigation }) => {
 
     if (!result.cancelled) {
       dispatch(addPost(formData));
+    } else {
+      console.log("bye");
     }
   };
 

@@ -13,8 +13,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { addReaction } from "../../store/actions/reactionActions";
 import { Ionicons } from "@expo/vector-icons";
-import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
-import Animated from "react-native-reanimated";
+import { Feather } from "@expo/vector-icons";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
@@ -121,7 +120,12 @@ const ReactionCam = ({ route, navigation }) => {
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={handleSubmit}>
-        <Text style={{ textAlign: "right", marginTop: 20 }}>Submit</Text>
+        <Feather
+          name="upload"
+          size={24}
+          color="white"
+          style={{ textAlign: "right", marginTop: 30 }}
+        />
       </TouchableOpacity>
     </>
   );
@@ -221,8 +225,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 35,
     left: 15,
-    height: closeButtonSize,
-    width: closeButtonSize,
+    height: closeButtonSize + 10,
+    width: closeButtonSize + 10,
     borderRadius: Math.floor(closeButtonSize / 2),
     justifyContent: "center",
     alignItems: "center",

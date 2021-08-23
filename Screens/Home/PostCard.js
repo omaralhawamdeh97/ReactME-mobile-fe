@@ -15,10 +15,13 @@ const PostCard = ({ post, navigation }) => {
   const date = moment(post.createdAt).fromNow();
   const { user } = post;
   const [play, setPlay] = useState(false);
+  const [videoStatus, setVideoStatus] = useState({});
+  const [hover, setHover] = useState("none");
 
   const start = () => {
     play ? setPlay(false) : setPlay(true);
   };
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -44,7 +47,32 @@ const PostCard = ({ post, navigation }) => {
           })
         }
         activeOpacity={1}
+        onPressIn={() => setHover(() => "flex")}
+        onPressOut={() => setHover(() => "none")}
       >
+        <View
+          style={{ backgroundColor: "black" }}
+          style={{
+            width: "100%",
+            height: 270,
+            zIndex: 1,
+            position: "absolute",
+            display: hover,
+            borderRadius: 150,
+          }}
+        >
+          <Image
+            source={require("../../assets/hover.png")}
+            style={{
+              width: "100%",
+              height: 270,
+              // zIndex: 1,
+              // position: "absolute",
+              // display: hover,
+              // borderRadius: 150,
+            }}
+          />
+        </View>
         <Video
           style={styles.video}
           source={{
@@ -53,22 +81,37 @@ const PostCard = ({ post, navigation }) => {
           isLooping
           resizeMode="stretch"
           shouldPlay={play}
+          usePoster={!videoStatus.isLoaded}
+          posterSource={require("../../assets/loading.png")}
+          posterStyle={{
+            width: "100%",
+            height: "100%",
+          }}
+          onPlaybackStatusUpdate={(status) => setVideoStatus(() => status)}
         />
       </TouchableOpacity>
 
-      <Button
-        title={`Reactions ${post.reactions.length}`}
+      <TouchableOpacity
         onPress={() =>
           navigation.navigate("Reactions", {
             reactions: post.reactions,
             postVideo: post.video,
           })
         }
-      />
-      <ImageBackground
-        source={require("../../assets/white.png")}
-        style={{ width: 70, height: 50 }}
-      ></ImageBackground>
+        style={{
+          flexDirection: "row",
+          alignSelf: "flex-end",
+          paddingRight: 20,
+        }}
+      >
+        <Image
+          source={require("../../assets/white.png")}
+          style={{ width: 70, height: 50 }}
+        />
+        <View style={styles.countCircle}>
+          <Text style={styles.number}>{post.reactions.length}</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -94,4 +137,14 @@ const styles = StyleSheet.create({
   userImage: { flexDirection: "row", alignItems: "center" },
   image: { width: 50, height: 50, borderRadius: 100 },
   username: { fontSize: 18, paddingLeft: 10, color: "white" },
+  countCircle: {
+    borderRadius: 150,
+    height: 23,
+    width: "auto",
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+  number: { fontSize: 18, color: "black" },
 });
