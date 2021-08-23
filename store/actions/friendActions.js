@@ -17,3 +17,20 @@ export const fetchFriends = () => {
     }
   };
 };
+
+export const refreshFriends = () => {
+  console.log("here,actions");
+  return async (dispatch) => {
+    try {
+      const token = await AsyncStorage.getItem("myToken");
+      instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+      const res = await instance.get("/user/friends");
+      dispatch({
+        type: actionTypes.REFRESH_FRIENDS,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

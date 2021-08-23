@@ -12,10 +12,16 @@ import {
 import { Video } from "expo-av";
 import moment from "moment";
 
-const WINDOW_HEIGHT = Dimensions.get("window").height;
+var index;
 
-const PublicPostCard = ({ post, navigation }) => {
+const WINDOW_HEIGHT = Dimensions.get("window").height;
+const videoSize = Math.floor(WINDOW_HEIGHT * 0.13);
+
+const SmallPostCard = ({ post, navigation }) => {
   const date = moment(post.createdAt).fromNow();
+  index = post.id;
+  index % 5 === 0 ? (index = 2) : (index = 1);
+  console.log(index);
   const { user } = post;
   const [play, setPlay] = useState(false);
   const [videoStatus, setVideoStatus] = useState({});
@@ -34,6 +40,8 @@ const PublicPostCard = ({ post, navigation }) => {
         }
         activeOpacity={1}
         style={styles.video}
+        onPressIn={() => start}
+        onPressOut={start}
       >
         <Video
           style={styles.video}
@@ -41,6 +49,7 @@ const PublicPostCard = ({ post, navigation }) => {
             uri: post.video,
           }}
           isLooping
+          shouldPlay={play}
           resizeMode="cover"
           usePoster={!videoStatus.isLoaded}
           posterSource={require("../../assets/loading.png")}
@@ -51,48 +60,22 @@ const PublicPostCard = ({ post, navigation }) => {
           onPlaybackStatusUpdate={(status) => setVideoStatus(() => status)}
         />
       </TouchableOpacity>
-      <View style={styles.footer}>
-        <View>
-          <View style={styles.userImage}>
-            <Image
-              source={{
-                uri: user.image
-                  ? user.image
-                  : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere.png",
-              }}
-              style={styles.image}
-            />
-            <Text style={styles.username}>{user.username}</Text>
-          </View>
-          <Text style={styles.date}>{date}</Text>
-        </View>
-        <Button
-          title={`Reactions ${post.reactions.length}`}
-          onPress={() =>
-            navigation.navigate("Reactions", {
-              reactions: post.reactions,
-              postVideo: post.video,
-            })
-          }
-        />
-        <ImageBackground
-          source={require("../../assets/white.png")}
-          style={{ width: 70, height: 50 }}
-        ></ImageBackground>
-      </View>
     </View>
   );
 };
 
-export default PublicPostCard;
+export default SmallPostCard;
 
 const styles = StyleSheet.create({
   video: {
-    ...StyleSheet.absoluteFillObject,
+    height: videoSize,
+    width: videoSize * 2,
   },
   card: {
-    height: WINDOW_HEIGHT - 58,
-    flexDirection: "column-reverse",
+    height: 220,
+    width: "100%",
+    margin: 1,
+    borderColor: "#444444",
   },
   date: { fontSize: 10, color: "gray" },
   footer: {
