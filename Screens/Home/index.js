@@ -21,6 +21,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { addPost } from "../../store/actions/postActions";
+import { AntDesign } from "@expo/vector-icons";
+import { Fontisto } from "@expo/vector-icons";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -50,12 +52,9 @@ const Home = ({ navigation }) => {
     friend.posts.forEach((post) => postsList.push(post))
   );
 
-  const posts = postsList
-    .map((post) => (
-      <PostCard post={post} key={post.id} navigation={navigation} />
-    ))
-    .reverse();
-
+  const posts = postsList.map((post) => (
+    <PostCard post={post} key={post.id} navigation={navigation} />
+  ));
   const pickVideo = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
@@ -115,12 +114,21 @@ const Home = ({ navigation }) => {
       <SafeAreaView />
       <View style={styles.header}>
         <Image source={require("../../assets/test.png")} style={styles.image} />
-        <MaterialCommunityIcons
-          onPress={() => refRBSheet.current.open()}
-          name="plus-box-outline"
-          size={30}
-          color={"white"}
-        />
+        <View style={styles.iconsView}>
+          <AntDesign
+            name="search1"
+            size={26}
+            color="white"
+            onPress={() => navigation.navigate("Search")}
+            style={{ paddingRight: 15 }}
+          />
+          <MaterialCommunityIcons
+            onPress={() => refRBSheet.current.open()}
+            name="plus-box-outline"
+            size={30}
+            color="white"
+          />
+        </View>
       </View>
       {sheet}
       <ScrollView
@@ -132,7 +140,16 @@ const Home = ({ navigation }) => {
           />
         }
       >
-        {posts}
+        {posts.length !== 0 ? (
+          posts
+        ) : (
+          <View style={styles.noPostsView}>
+            <Text style={styles.noPostsText}>
+              No posts , add more friends or press on{" "}
+              <Fontisto name="world-o" size={24} color="gray" /> to explore
+            </Text>
+          </View>
+        )}
         {openCam ? navigation.navigate("Cam") : <></>}
       </ScrollView>
     </View>
@@ -164,5 +181,14 @@ const styles = StyleSheet.create({
   image: {
     height: "100%",
     width: 150,
+  },
+  iconsView: { flexDirection: "row", alignItems: "center" },
+  noPostsView: {
+    height: 500,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noPostsText: {
+    color: "gray",
   },
 });

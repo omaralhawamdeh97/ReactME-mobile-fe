@@ -12,9 +12,9 @@ import ImageView from "react-native-image-viewing";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 
-const FriendCard = ({ friend, navigation }) => {
+const FoundUserCard = ({ user, navigation }) => {
   const [visible, setIsVisible] = useState(false);
-  const images = [{ uri: friend.image }];
+  const images = [{ uri: user.image }];
 
   return (
     <SafeAreaView style={styles.card}>
@@ -27,29 +27,29 @@ const FriendCard = ({ friend, navigation }) => {
       <TouchableOpacity onPress={() => setIsVisible(true)}>
         <Image
           source={{
-            uri: friend.image
-              ? friend.image
+            uri: user.image
+              ? user.image
               : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere.png",
           }}
           style={styles.image}
         />
       </TouchableOpacity>
-      <Text style={styles.username}>{friend.username}</Text>
+      <Text style={styles.username}>{user.username}</Text>
       <Text
         style={styles.posts}
-        onPress={() => navigation.navigate("FriendPosts", { friend: friend })}
+        onPress={() => navigation.navigate("FriendPosts", { friend: user })}
       >
-        {friend.posts.length} posts
+        {user.posts.length} posts
       </Text>
     </SafeAreaView>
   );
 };
 
-export default FriendCard;
+export default FoundUserCard;
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 0.3,
+    borderBottomWidth: 0.9,
     borderRadius: 15,
     height: 105,
     flexDirection: "row",
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     shadowOpacity: 0.2,
     marginBottom: 10,
-    borderColor: "#481049",
+    borderColor: "#444444",
   },
   image: { width: 65, height: 65, borderRadius: 10, marginLeft: 15 },
   username: { marginLeft: 15, color: "white" },

@@ -66,10 +66,6 @@ const PostCard = ({ post, navigation }) => {
             style={{
               width: "100%",
               height: 270,
-              // zIndex: 1,
-              // position: "absolute",
-              // display: hover,
-              // borderRadius: 150,
             }}
           />
         </View>

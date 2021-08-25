@@ -12,6 +12,7 @@ import { Video } from "expo-av";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { addPost } from "../../store/actions/postActions";
+import { Feather } from "@expo/vector-icons";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
@@ -111,7 +112,7 @@ const Cam = ({ navigation }) => {
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={handleSubmit}>
-        <Text style={{ textAlign: "right", marginTop: 20 }}>Submit</Text>
+        <Feather name="upload" size={24} color="white" style={styles.icon} />
       </TouchableOpacity>
     </>
   );
@@ -243,5 +244,13 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#fff",
+  },
+  icon: {
+    textAlign: "right",
+    marginTop: 30,
+    shadowOpacity: 0.31,
+    marginRight: 15,
+    shadowRadius: 1,
+    shadowOffset: { width: 1 },
   },
 });

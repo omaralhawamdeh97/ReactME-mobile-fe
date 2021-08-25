@@ -7,15 +7,45 @@ import {
   Text,
   View,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import PostCard from "./PostCard";
+import { Entypo } from "@expo/vector-icons";
+import { addFriend } from "../../store/actions/friendActions";
 
 const FriendPosts = ({ route, navigation }) => {
+  const dispatch = useDispatch();
   const { friend } = route.params;
+  const friends = useSelector((state) => state.friendsReducer.friends);
+  const user = useSelector((state) => state.authReducer.user);
+  const foundFriend = friends.find((f) => f.username === friend.username);
 
+  const relation = { firstUserId: user.id, secondUserId: friend.id };
+  const handleAdd = () => {
+    dispatch(addFriend(relation, friend));
+  };
+  console.log(friends, "friends");
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.username}>{friend.username}</Text>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <Text style={styles.username}>{friend.username}</Text>
+
+          <Entypo
+            name="add-user"
+            size={24}
+            color="white"
+            style={{
+              display: foundFriend ? "none" : "flex",
+              // marginLeft: 2,
+              left: 145,
+            }}
+            onPress={handleAdd}
+          />
+        </View>
         <Image
           source={{
             uri:
@@ -25,19 +55,23 @@ const FriendPosts = ({ route, navigation }) => {
           style={styles.image}
         />
       </View>
-      <View style={styles.list}>
-        {friend.posts.length !== 0 ? (
-          <ScrollView>
-            {friend.posts.map((post) => (
+      <ScrollView style={styles.list}>
+        {foundFriend || friend.isPublic ? (
+          friend.posts.length !== 0 ? (
+            friend.posts.map((post) => (
               <PostCard post={post} key={post.id} navigation={navigation} />
-            ))}
-          </ScrollView>
+            ))
+          ) : (
+            <Text style={styles.warning}>
+              {friend.username} has no posts yet 😭 !
+            </Text>
+          )
         ) : (
           <Text style={styles.warning}>
-            {friend.username} has no posts yet 😭 !
+            {friend.username} is private, add him to see his posts
           </Text>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -45,17 +79,21 @@ const FriendPosts = ({ route, navigation }) => {
 export default FriendPosts;
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: "black" },
   header: {
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: "8%",
-    backgroundColor: "gray",
-    height: "23%",
+    // height: "23%",
   },
-  username: { fontSize: 25 },
+  username: { fontSize: 25, color: "white", paddingBottom: 10 },
   image: { width: 120, height: 120, borderRadius: 100 },
 
-  warning: { textAlign: "center", alignSelf: "center", top: "1000%" },
+  warning: {
+    textAlign: "center",
+    alignSelf: "center",
+    top: "1000%",
+    color: "gray",
+  },
   list: { paddingTop: 10 },
 });

@@ -10,7 +10,11 @@ const MyPosts = ({ navigation }) => {
       <PostCard post={post} key={post.id} navigation={navigation} />
     ))
     .reverse();
-  return <ScrollView>{postsList}</ScrollView>;
+  return (
+    <ScrollView style={{ paddingLeft: 5, paddingTop: 5 }}>
+      {postsList}
+    </ScrollView>
+  );
 };
 
 export default MyPosts;

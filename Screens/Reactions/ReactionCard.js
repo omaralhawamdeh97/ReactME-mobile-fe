@@ -38,6 +38,7 @@ const ReactionCard = ({ reaction, postVideo }) => {
           shouldPlay={start}
           resizeMode="cover"
           // isLooping
+          volume={1}
           onPlaybackStatusUpdate={(status) => setVideoStatus(() => status)}
         />
         <View style={styles.footer}>
