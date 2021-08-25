@@ -6,7 +6,9 @@ import Login from "../Screens/Authentication/Login";
 import Cam from "../Screens/Camera/Cam";
 import ReactionCam from "../Screens/Camera/ReactionCam";
 import FriendPosts from "../Screens/Home/FriendPosts";
+import EditProfile from "../Screens/Profile/EditProfile";
 import Reactions from "../Screens/Reactions";
+import Search from "../Screens/Search";
 import TabNavigator from "./TabNavigator";
 
 const { Navigator, Screen } = createStackNavigator();
@@ -29,6 +31,8 @@ const StackNavigator = () => {
           <Screen name="Reactions" component={Reactions} />
           <Screen name="ReactionCam" component={ReactionCam} />
           <Screen name="FriendPosts" component={FriendPosts} />
+          <Screen name="Search" component={Search} />
+          <Screen name="EditProfile" component={EditProfile} />
         </Navigator>
       )}
     </>

@@ -19,6 +19,11 @@ const friendsReducer = (state = initialState, action) => {
         friends: action.payload,
         loading: false,
       };
+    case actionTypes.ADD_FRIEND:
+      return {
+        ...state,
+        friends: [...state.friends, action.payload],
+      };
 
     default:
       return state;

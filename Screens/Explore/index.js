@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getPublicPosts } from "../../store/actions/postActions";
 import PublicPostCard from "./PulicPostCard";
+import { EvilIcons } from "@expo/vector-icons";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
@@ -32,8 +33,15 @@ const Explore = ({ navigation }) => {
       {/* <Text>Explore</Text> */}
       <ScrollView pagingEnabled>
         {renderedPosts}
-        <TouchableOpacity onPress={() => setPageNumber(pageNumber + 1)}>
-          <Text>Load more</Text>
+        <TouchableOpacity
+          onPressIn={() => setPageNumber(pageNumber + 1)}
+          style={{
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <EvilIcons name="spinner" size={30} color="black" />
         </TouchableOpacity>
       </ScrollView>
     </View>

@@ -34,3 +34,19 @@ export const refreshFriends = () => {
     }
   };
 };
+
+export const addFriend = (relation, friend) => {
+  return async (dispatch) => {
+    try {
+      const token = await AsyncStorage.getItem("myToken");
+      instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+      await instance.post("/friends", relation);
+      dispatch({
+        type: actionTypes.ADD_FRIEND,
+        payload: friend,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

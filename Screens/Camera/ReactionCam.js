@@ -120,12 +120,7 @@ const ReactionCam = ({ route, navigation }) => {
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={handleSubmit}>
-        <Feather
-          name="upload"
-          size={24}
-          color="white"
-          style={{ textAlign: "right", marginTop: 30 }}
-        />
+        <Feather name="upload" size={30} color="white" style={styles.icon} />
       </TouchableOpacity>
     </>
   );
@@ -288,5 +283,13 @@ const styles = StyleSheet.create({
     width: 150,
     // alignSelf: "flex-end",
     marginRight: 15,
+  },
+  icon: {
+    textAlign: "right",
+    marginTop: 30,
+    shadowOpacity: 0.31,
+    marginRight: 15,
+    shadowRadius: 1,
+    shadowOffset: { width: 1 },
   },
 });

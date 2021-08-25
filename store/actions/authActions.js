@@ -52,7 +52,6 @@ export const checkForToken = () => async (dispatch) => {
 const setUser = (token) => async (dispatch) => {
   if (token) {
     await AsyncStorage.setItem("myToken", token);
-
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     dispatch({
       type: actionTypes.SET_USER,
@@ -66,20 +65,6 @@ const setUser = (token) => async (dispatch) => {
     });
   }
 };
-// export const fetchUsers = () => {
-//   return async (dispatch) => {
-//     try {
-//       const res = await instance.get("/users");
-
-//       dispatch({
-//         type: actionTypes.FETCH_USERS,
-//         payload: res?.data,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
 
 export const goPublic = (body) => {
   return async (dispatch) => {
@@ -87,6 +72,19 @@ export const goPublic = (body) => {
       const token = await AsyncStorage.getItem("myToken");
       instance.defaults.headers.common.Authorization = `Bearer ${token}`;
       const res = await instance.put(`/gopublic`, body);
+      dispatch(setUser(res.data.token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const updateUserImage = (body) => {
+  return async (dispatch) => {
+    try {
+      const token = await AsyncStorage.getItem("myToken");
+      instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+      const res = await instance.put(`users/image`, body);
       dispatch(setUser(res.data.token));
     } catch (error) {
       console.log(error);
